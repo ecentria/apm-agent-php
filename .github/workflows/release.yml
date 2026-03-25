@@ -8,8 +8,6 @@ on:
   workflow_dispatch: ~
   push:
     tags: [ "v[0-9]+*" ]
-    branches:
-      - main
 
 env:
   BUILD_PACKAGES: build/packages
@@ -58,9 +56,9 @@ jobs:
       - name: Create GitHub release
         run: |
           gh release create "${TAG_NAME}" \
+            --verify-tag \
             --title "${TAG_NAME}" \
-            --notes "Ecentria fork release. Changes from upstream v1.16.0:
-          - Add configurable max send queue size (#1441)
-          - Fix span ID collisions: use random_bytes() instead of mt_rand() (#1443)" \
+            --generate-notes \
+            --notes "Ecentria fork release." \
             --repo ${{ github.repository }} \
             ${{ env.BUILD_PACKAGES }}/*.*
